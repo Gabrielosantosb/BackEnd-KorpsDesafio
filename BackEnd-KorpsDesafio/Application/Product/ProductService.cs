@@ -29,7 +29,7 @@ namespace BackEnd_KorpsDesafio.Application.Product
         {
 
 
-            var query = _productRepository._context.Products.AsQueryable();
+            var query = _productRepository._context.Products.Include(c => c.Category).AsQueryable();
 
             query = ApplyGetProductsFilters(query, productsFilter);
 
