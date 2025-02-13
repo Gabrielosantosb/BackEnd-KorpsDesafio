@@ -23,19 +23,24 @@ namespace BackEnd_KorpsDesafio.Application.Product
             _mapper = mapper;
         }
 
-          
 
-        public IEnumerable<ProductModel> GetProducts(PaginationDTO pagination, GetProductsFilterDTO productsFilter)
+
+        public (IEnumerable<ProductModel> Products, int TotalCount) GetProducts(PaginationDTO pagination, GetProductsFilterDTO productsFilter)
         {
-            var query = _productRepository._context.Products
-            .Include(p => p.Category) 
-            .AsQueryable();
+
+
+            var query = _productRepository._context.Products.AsQueryable();
+
             query = ApplyGetProductsFilters(query, productsFilter);
 
-            query = query.Skip((pagination.Page - 1) * pagination.PageSize)
-                      .Take(pagination.PageSize);
+            var totalCount = query.Count();
 
-            return query.ToList();
+            var products = query
+                .Skip((pagination.Page - 1) * pagination.PageSize)
+                .Take(pagination.PageSize)
+                .ToList();
+
+            return (products, totalCount);     
         }
         public ProductModel CreateProduct(CreateProductRequest productRequest)
         {

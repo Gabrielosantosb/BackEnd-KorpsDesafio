@@ -30,16 +30,24 @@ namespace BackEnd_KorpsDesafio.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetProducts([FromQuery] PaginationDTO pagination, [FromQuery] GetProductsFilterDTO filters)
-        {
-            var products = _productService.GetProducts(pagination, filters);
+        {            
+            try
+            {                
+                var (products, totalCount) = _productService.GetProducts(pagination, filters);
 
-            if (products.Any())
-            {
-                return Ok(products);
+                return Ok(new
+                {
+                    totalCount,
+                    products
+                });
             }
-            else
+            catch (Exception ex)
             {
-                return NotFound("Sem produtos!");
+                return BadRequest(new
+                {
+                    message = "Erro ao processar a requisição.",
+                    error = ex.Message
+                });
             }
 
         }
@@ -59,14 +67,23 @@ namespace BackEnd_KorpsDesafio.Controllers
             {
                 return BadRequest("Dados inválidos!");
             }
-            var createdLead = _productService.CreateProduct(productRequest);
-            if (createdLead != null)
+
+            try
             {
-                return Ok(productRequest);
+                var createdProduct = _productService.CreateProduct(productRequest);
+
+                if (createdProduct != null)
+                {
+                    return Ok(createdProduct);
+                }
+                else
+                {
+                    return BadRequest("Erro ao criar novo produto.");
+                }
             }
-            else
-            {
-                return BadRequest("Erro ao criar novo Produto");
+            catch (Exception ex)
+            {                
+                return StatusCode(500, "Ocorreu um erro interno ao criar o produto.");
             }
         }
 
@@ -83,14 +100,29 @@ namespace BackEnd_KorpsDesafio.Controllers
         {
             if (productRequest == null)
             {
-                return BadRequest("Dados inválidos");
+                return BadRequest("Dados inválidos!");
             }
-            ProductModel updatedProduct = _productService.UpdateProduct(productId, productRequest);
-            if (updatedProduct != null)
+
+            try
             {
-                return Ok(updatedProduct);
+                var updatedProduct = _productService.UpdateProduct(productId, productRequest);
+
+                if (updatedProduct != null)
+                {
+                    return Ok(updatedProduct);
+                }
+                else
+                {
+                    return BadRequest("Falha ao atualizar produto!");
+                }
             }
-            return BadRequest("Falha ao atualizar produto!");
+            catch (Exception ex)
+            {
+                // Log do erro (substituir por um sistema de logs se necessário)
+                Console.WriteLine($"Erro ao atualizar produto {productId}: {ex.Message}");
+                return StatusCode(500, "Ocorreu um erro interno ao atualizar o produto.");
+            }
+
 
         }
 
@@ -106,17 +138,26 @@ namespace BackEnd_KorpsDesafio.Controllers
         [HttpPut("toggle-product-status/{productId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult ToggleProductStatus([FromBody] bool isActive, int productId)
         {
-            var result = _productService.ToggleProductStatus(productId, isActive);
-
-            if (result)
+            try
             {
-                return Ok($"Status do produto atualizado para ");
-            }
+                var result = _productService.ToggleProductStatus(productId, isActive);
 
-            return BadRequest("Falha ao alterar o status do produto.");
+                if (result)
+                {
+                    return Ok();
+                }
+
+                return BadRequest("Falha ao alterar o status do produto.");
+            }
+            catch (Exception ex)
+            {                                
+                return StatusCode(500, "Ocorreu um erro interno ao alterar o status do produto.");
+            }
         }
+
 
 
 

@@ -7,8 +7,9 @@ namespace BackEnd_KorpsDesafio.Application.Product
 {
     public interface IProductService
     {
+        
+        (IEnumerable<ProductModel> Products, int TotalCount) GetProducts(PaginationDTO pagination, GetProductsFilterDTO productsFilter);
 
-        IEnumerable<ProductModel> GetProducts(PaginationDTO pagination, GetProductsFilterDTO productsFilter);
         ProductModel CreateProduct(CreateProductRequest productRequest);
         ProductModel UpdateProduct(int productId, UpdateProductRequest productRequest);
         bool ToggleProductStatus(int productId, bool isActive);
