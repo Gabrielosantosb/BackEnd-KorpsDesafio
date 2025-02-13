@@ -27,8 +27,6 @@ namespace BackEnd_KorpsDesafio.Application.Product
 
         public (IEnumerable<ProductModel> Products, int TotalCount) GetProducts(PaginationDTO pagination, GetProductsFilterDTO productsFilter)
         {
-
-
             var query = _productRepository._context.Products.Include(c => c.Category).AsQueryable();
 
             query = ApplyGetProductsFilters(query, productsFilter);

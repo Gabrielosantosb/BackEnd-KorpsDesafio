@@ -3,7 +3,6 @@ using BackEnd_KorpsDesafio.Application.Product;
 using BackEnd_KorpsDesafio.ORM.Context;
 using BackEnd_KorpsDesafio.ORM.Entity.Category;
 using BackEnd_KorpsDesafio.ORM.Entity.Product;
-using BackEnd_KorpsDesafio.ORM.Mappings.Product;
 using BackEnd_KorpsDesafio.ORM.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +14,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors();
+
 
 
 
@@ -51,6 +52,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors(options =>
+    {
+        options.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+}
+
 
 app.UseHttpsRedirection();
 
