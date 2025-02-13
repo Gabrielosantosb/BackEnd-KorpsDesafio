@@ -27,7 +27,14 @@ namespace BackEnd_KorpsDesafio.Application.Product
 
         public (IEnumerable<ProductModel> Products, int TotalCount) GetProducts(PaginationDTO pagination, GetProductsFilterDTO productsFilter)
         {
-            var query = _productRepository._context.Products.Include(c => c.Category).AsQueryable();
+            var query = _productRepository._context.Products
+                .Include(c => c.Category)
+                .AsQueryable();
+            
+            if (productsFilter.IsActive == null)
+            {
+                query = query.Where(p => p.IsActive);
+            }
 
             query = ApplyGetProductsFilters(query, productsFilter);
 
@@ -38,8 +45,9 @@ namespace BackEnd_KorpsDesafio.Application.Product
                 .Take(pagination.PageSize)
                 .ToList();
 
-            return (products, totalCount);     
+            return (products, totalCount);
         }
+
         public ProductModel CreateProduct(CreateProductRequest productRequest)
         {
 
