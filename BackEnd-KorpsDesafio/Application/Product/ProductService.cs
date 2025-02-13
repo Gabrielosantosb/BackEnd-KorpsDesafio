@@ -26,7 +26,7 @@ namespace BackEnd_KorpsDesafio.Application.Product
 
         public IEnumerable<ProductModel> GetProducts(PaginationDTO pagination, GetProductsFilterDTO productsFilter)
         {
-            var query = _productRepository._context.Product.AsQueryable();
+            var query = _productRepository._context.Products.AsQueryable();
             query = ApplyGetProductsFilters(query, productsFilter);
 
             query = query.Skip((pagination.Page - 1) * pagination.PageSize)
@@ -39,6 +39,7 @@ namespace BackEnd_KorpsDesafio.Application.Product
             if(productRequest == null) throw new ArgumentNullException(nameof(productRequest));
             var newProduct = _mapper.Map<ProductModel>(productRequest);
             var res = _productRepository.Add(newProduct);
+            _productRepository.SaveChanges();
             return res;
         }
 
@@ -46,7 +47,7 @@ namespace BackEnd_KorpsDesafio.Application.Product
         {
             var existProduct = _productRepository.GetById(productId);
             if (existProduct == null) return null;
-            _mapper.Map(existProduct, productRequest);
+            _mapper.Map(productRequest, existProduct);
             _productRepository.SaveChanges();
             return existProduct;
         }

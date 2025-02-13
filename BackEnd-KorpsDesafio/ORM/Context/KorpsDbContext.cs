@@ -4,9 +4,17 @@ using Microsoft.EntityFrameworkCore;
 namespace BackEnd_KorpsDesafio.ORM.Context
 {
     public class KorpsDbContext : DbContext
-    {       
+    {
         public KorpsDbContext(DbContextOptions<KorpsDbContext> options) : base(options) { }
 
-        public DbSet<ProductModel> Product { get; set; }
+        public DbSet<ProductModel> Products { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.Entity<ProductModel>()
+                .HasKey(p => p.ProductId); 
+        }
     }
 }

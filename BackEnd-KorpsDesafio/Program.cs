@@ -14,8 +14,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
-
 
 
 #region Mapper
@@ -39,6 +37,8 @@ builder.Services.AddDbContext<KorpsDbContext>(options =>
     options.UseMySql(connectionString, serverVersion);
 });
 #endregion mysqlconfig
+
+var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.

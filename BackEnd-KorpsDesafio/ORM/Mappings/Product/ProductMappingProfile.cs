@@ -17,13 +17,14 @@ namespace BackEnd_KorpsDesafio.ORM.Mappings.Product
                 });
             //AutoMapper para UpdateProduct
             CreateMap<UpdateProductRequest, ProductModel>()
-                 .AfterMap((productRequest, productModel) =>
-                 {                  
-                     productModel.UpdatedAt = DateTime.Now;
-                 })                
-                .ForMember(dest => dest.DateCreated, opt => opt.Ignore());  // Ignora a data de criação
+              .ForMember(dest => dest.DateCreated, opt => opt.Ignore()) 
+              .ForMember(dest => dest.ProductId, opt => opt.Ignore()) 
+              .AfterMap((productRequest, productModel) =>
+              {
+                  productModel.UpdatedAt = DateTime.Now; 
+              });
         }
 
     }
-    }
 }
+
