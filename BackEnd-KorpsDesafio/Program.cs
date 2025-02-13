@@ -1,5 +1,7 @@
+using BackEnd_KorpsDesafio.Application.Category;
 using BackEnd_KorpsDesafio.Application.Product;
 using BackEnd_KorpsDesafio.ORM.Context;
+using BackEnd_KorpsDesafio.ORM.Entity.Category;
 using BackEnd_KorpsDesafio.ORM.Entity.Product;
 using BackEnd_KorpsDesafio.ORM.Mappings.Product;
 using BackEnd_KorpsDesafio.ORM.Repository;
@@ -18,15 +20,17 @@ builder.Services.AddSwaggerGen();
 
 #region Mapper
 builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddAutoMapper(typeof(ProductMappingProfile));
+builder.Services.AddAutoMapper(typeof(CategoryMappingProfile));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 #endregion Mapper
 
 #region dependencyInjection
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<BaseRepository<ProductModel>>();
+builder.Services.AddScoped<BaseRepository<CategoryModel>>();
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 #endregion dependencyInjection
 
 #region mysqlconfig

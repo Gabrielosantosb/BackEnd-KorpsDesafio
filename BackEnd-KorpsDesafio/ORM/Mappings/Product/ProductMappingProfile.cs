@@ -4,9 +4,9 @@ using BackEnd_KorpsDesafio.ORM.Model.Product;
 
 namespace BackEnd_KorpsDesafio.ORM.Mappings.Product
 {
-    public class ProductMappingProfile : Profile
+    public class CategoryMappingProfile : Profile
     {
-        public ProductMappingProfile() {
+        public CategoryMappingProfile() {
 
             //AutoMapper para CreateProduct
             CreateMap<CreateProductRequest, ProductModel>()

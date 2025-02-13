@@ -5,6 +5,7 @@ using BackEnd_KorpsDesafio.ORM.Model.Lead;
 using BackEnd_KorpsDesafio.ORM.Model.Pagination;
 using BackEnd_KorpsDesafio.ORM.Model.Product;
 using BackEnd_KorpsDesafio.ORM.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd_KorpsDesafio.Application.Product
 {
@@ -26,7 +27,9 @@ namespace BackEnd_KorpsDesafio.Application.Product
 
         public IEnumerable<ProductModel> GetProducts(PaginationDTO pagination, GetProductsFilterDTO productsFilter)
         {
-            var query = _productRepository._context.Products.AsQueryable();
+            var query = _productRepository._context.Products
+            .Include(p => p.Category) 
+            .AsQueryable();
             query = ApplyGetProductsFilters(query, productsFilter);
 
             query = query.Skip((pagination.Page - 1) * pagination.PageSize)
@@ -36,7 +39,14 @@ namespace BackEnd_KorpsDesafio.Application.Product
         }
         public ProductModel CreateProduct(CreateProductRequest productRequest)
         {
-            if(productRequest == null) throw new ArgumentNullException(nameof(productRequest));
+
+            var category = _context.Categories.FirstOrDefault(c => c.CategoryId == productRequest.CategoryId);
+            if (category == null)
+            {
+                throw new ArgumentException($"A categoria não existe.");
+            }
+
+            if (productRequest == null) throw new ArgumentNullException(nameof(productRequest));
             var newProduct = _mapper.Map<ProductModel>(productRequest);
             var res = _productRepository.Add(newProduct);
             _productRepository.SaveChanges();
