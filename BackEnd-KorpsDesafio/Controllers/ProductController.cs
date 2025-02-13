@@ -94,6 +94,31 @@ namespace BackEnd_KorpsDesafio.Controllers
 
         }
 
+        /// <summary>
+        /// Ativa ou desativa um produto existente.
+        /// </summary>
+        /// <param name="productId">ID do produto que terá o status alterado.</param>
+        /// <param name="isActive">Define se o produto deve ser ativado (true) ou desativado (false).</param>
+        /// <returns>
+        /// Retorna 200 OK se a atualização for bem-sucedida.
+        /// Retorna 400 Bad Request se o produto não for encontrado ou ocorrer um erro.
+        /// </returns>
+        [HttpPut("toggle-product-status/{productId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult ToggleProductStatus([FromBody] bool isActive, int productId)
+        {
+            var result = _productService.ToggleProductStatus(productId, isActive);
+
+            if (result)
+            {
+                return Ok($"Status do produto atualizado para ");
+            }
+
+            return BadRequest("Falha ao alterar o status do produto.");
+        }
+
+
 
     }
 }
