@@ -1,7 +1,7 @@
 ﻿using BackEnd_KorpsDesafio.ORM.Entity.Product;
+using BackEnd_KorpsDesafio.ORM.Model.Lead;
 using BackEnd_KorpsDesafio.ORM.Model.Product;
-using FrameworkDigital_DesafioBackEnd.ORM.Model.Lead;
-using FrameworkDigital_DesafioBackEnd.ORM.Model.Pagination;
+using BackEnd_KorpsDesafio.ORM.Model.Pagination;
 
 namespace BackEnd_KorpsDesafio.Application.Product
 {
@@ -10,7 +10,7 @@ namespace BackEnd_KorpsDesafio.Application.Product
 
         IEnumerable<ProductModel> GetLeads(PaginationDTO pagination, GetProductsFilterDTO productsFilter);
         ProductModel CreateProduct(CreateProductRequest productRequest);
-        ProductModel UpdateProduct(int productId, CreateProductRequest productRequest);
+        ProductModel UpdateProduct(int productId, UpdateProductRequest productRequest);
         bool ToggleProductStatus(int productId, bool isActive);
 
     }

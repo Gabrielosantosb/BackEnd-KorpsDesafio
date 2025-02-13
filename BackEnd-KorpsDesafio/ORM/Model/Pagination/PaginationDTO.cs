@@ -1,4 +1,4 @@
-﻿namespace FrameworkDigital_DesafioBackEnd.ORM.Model.Pagination
+﻿namespace BackEnd_KorpsDesafio.ORM.Model.Pagination
 {
     public class PaginationDTO
     {

@@ -23,10 +23,19 @@ namespace BackEnd_KorpsDesafio.ORM.Repository
             return _context.Set<T>().ToList();
         }
 
+        public T GetById(int id)
+        {
+            return _context.Set<T>().Find(id);
+        }
+
         public T Update(T entity)
         {
             _context.Update(entity);
             return entity;
+        }
+        public void SaveChanges()
+        {
+            _context.SaveChanges(true);
         }
     }
 }

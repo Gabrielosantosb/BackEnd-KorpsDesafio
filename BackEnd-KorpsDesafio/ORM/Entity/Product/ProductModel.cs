@@ -9,5 +9,7 @@ namespace BackEnd_KorpsDesafio.ORM.Entity.Product
         public string ProductName{ get; set; }
         public decimal ProductPrice { get; set; }        
         public DateTime DateCreated { get; set; }               
+        public DateTime? UpdatedAt { get; set; }               
+        public Boolean IsActive { get; set; }
     }
 }
